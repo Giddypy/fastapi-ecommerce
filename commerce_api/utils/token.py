@@ -6,10 +6,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app import models
 from app.database import get_db
-
-SECRET_KEY = "supersecretkey"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from utils.settings import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 oauth2_scheme = HTTPBearer()
 

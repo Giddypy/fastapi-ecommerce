@@ -1,0 +1,37 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Environment variables
+*.env
+
+# SQLite database files
+*ecommerce.db
+*.sqlite3
+
+# VS Code settings
+.vscode/
+
+# Logs
+*.log
+
+# Compiled / packaged
+*.egg-info/
+dist/
+build/
+
+# Testing
+.coverage
+.pytest_cache/
+
+# IDE specific
+.idea/
+.DS_Store
