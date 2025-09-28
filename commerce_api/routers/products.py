@@ -30,3 +30,17 @@ def create_product(product_in: product.ProductCreate,
 @router.get("/", response_model=list[product.ProductResponse])
 def list_products(db: Session = Depends(get_db)):
     return db.query(models.Product).all()
+
+
+@router.delete("/{product_id}", response_model=product.ProductResponse)
+def delete_product(product_id: int,
+                   db: Session = Depends(get_db),
+                   current_user: models.User = Depends(admin_required)
+                   ):
+    product = db.query(models.Product).filter(models.Product.id == product_id).first()
+    
+    if not product:
+        raise HTTPException(status_code=403, detail= "Product not found")
+    db.delete(product)
+    db.commit()
+    return {"detail": f"product {product_id} deleted successfully"}

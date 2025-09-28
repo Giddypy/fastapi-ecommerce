@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, fun
 from sqlalchemy.orm import relationship
 from .database import Base
 
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -11,6 +12,17 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
 
     orders = relationship("Order", back_populates="user")
+
+
+
+class Admin(Base):
+     __tablename__ = "admins"
+     id = Column(Integer, primary_key=True, index=True)
+     username = Column(String, unique=True, index=True, nullable=False)
+     email = Column(String, unique=True, index=True, nullable=False)
+     hashed_password = Column(String, nullable=False)
+     is_admin = Column(Boolean, default=True)
+
 
 
 class Product(Base):
@@ -54,6 +66,7 @@ class CartItem(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"))
+    # product_name = Column(String, ForeignKey("products.name", ondelete="CASCADE"))
     quantity = Column(Integer, nullable=False, default=1)
 
     user = relationship("User")

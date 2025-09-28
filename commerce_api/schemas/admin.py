@@ -1,20 +1,20 @@
 from pydantic import BaseModel, EmailStr
-from datetime import datetime
 
-class UserCreate(BaseModel):
+
+class AdminModel(BaseModel):
     username: str
     email: EmailStr
     password: str
 
-class UserLogin(BaseModel):
+class AdminLogin(BaseModel):
     email: EmailStr
     password: str
 
-class UserResponse(BaseModel):
+
+class AdminModelResponse(BaseModel):
     id: int
     username: str
     email: EmailStr
-    is_admin: bool
 
     class Config:
         from_attributes = True

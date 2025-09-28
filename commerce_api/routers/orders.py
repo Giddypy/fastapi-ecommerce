@@ -58,74 +58,74 @@ def checkout(
     return new_order
 
 
-@router.put("/{order_id}/status", response_model=order.OrderResponse)
-def update_order_status(
-    order_id: int,
-    status_update: order.OrderStatusUpdate,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user)
-):
-    # only admins can update order status
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Not authorized")
+# @router.put("/{order_id}/status", response_model=order.OrderResponse)
+# def update_order_status(
+#     order_id: int,
+#     status_update: order.OrderStatusUpdate,
+#     db: Session = Depends(get_db),
+#     current_user: models.User = Depends(get_current_user)
+# ):
+#     # only admins can update order status
+#     if not current_user.is_admin:
+#         raise HTTPException(status_code=403, detail="Not authorized")
 
-    order = db.query(models.Order).filter(models.Order.id == order_id).first()
-    if not order:
-        raise HTTPException(status_code=404, detail="Order not found")
+#     order = db.query(models.Order).filter(models.Order.id == order_id).first()
+#     if not order:
+#         raise HTTPException(status_code=404, detail="Order not found")
 
-    valid_statuses = ["pending", "processing", "shipped", "delivered", "cancelled"]
-    if status_update.status not in valid_statuses:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid status. Must be one of: {valid_statuses}"
-        )
+#     valid_statuses = ["pending", "processing", "shipped", "delivered", "cancelled"]
+#     if status_update.status not in valid_statuses:
+#         raise HTTPException(
+#             status_code=400,
+#             detail=f"Invalid status. Must be one of: {valid_statuses}"
+#         )
 
-    order.status = status_update.status
-    db.commit()
-    db.refresh(order)
+#     order.status = status_update.status
+#     db.commit()
+#     db.refresh(order)
 
-    return order
-
-
-
-@router.get("/my-orders", response_model=list[order.OrderResponse])
-def get_my_orders(
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user)
-):
-    orders = (
-        db.query(models.Order)
-        .filter(models.Order.user_id == current_user.id)
-        .all()
-    )
-    return orders
+#     return order
 
 
-@router.get("/", response_model=list[order.OrderResponse])
-def get_all_orders(
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user)
-):
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Not authorized")
 
-    orders = db.query(models.Order).all()
-    return orders
+# @router.get("/my-orders", response_model=list[order.OrderResponse])
+# def get_my_orders(
+#     db: Session = Depends(get_db),
+#     current_user: models.User = Depends(get_current_user)
+# ):
+#     orders = (
+#         db.query(models.Order)
+#         .filter(models.Order.user_id == current_user.id)
+#         .all()
+#     )
+#     return orders
 
 
-@router.get("/{order_id}", response_model=order.OrderResponse)
-def get_order(
-    order_id: int,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user)
-):
-    order = db.query(models.Order).filter(models.Order.id == order_id).first()
-    if not order:
-        raise HTTPException(status_code=404, detail="Order not found")
+# @router.get("/", response_model=list[order.OrderResponse])
+# def get_all_orders(
+#     db: Session = Depends(get_db),
+#     current_user: models.User = Depends(get_current_user)
+# ):
+#     if not current_user.is_admin:
+#         raise HTTPException(status_code=403, detail="Not authorized")
 
-    if not current_user.is_admin and order.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized")
+#     orders = db.query(models.Order).all()
+#     return orders
 
-    return order
+
+# @router.get("/{order_id}", response_model=order.OrderResponse)
+# def get_order(
+#     order_id: int,
+#     db: Session = Depends(get_db),
+#     current_user: models.User = Depends(get_current_user)
+# ):
+#     order = db.query(models.Order).filter(models.Order.id == order_id).first()
+#     if not order:
+#         raise HTTPException(status_code=404, detail="Order not found")
+
+#     if not current_user.is_admin and order.user_id != current_user.id:
+#         raise HTTPException(status_code=403, detail="Not authorized")
+
+#     return order
 
 
