@@ -12,6 +12,8 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
 
     orders = relationship("Order", back_populates="user")
+    cart_items = relationship("CartItem", back_populates="user", cascade="all, delete")
+
 
 
 

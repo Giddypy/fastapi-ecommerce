@@ -3,7 +3,6 @@ from pydantic import BaseModel
 class ShippingCreate(BaseModel):
     address: str
     city: str
-    postal_code: str
     country: str
 
 class ShippingResponse(ShippingCreate):
